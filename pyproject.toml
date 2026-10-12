@@ -1,0 +1,20 @@
+# The standard ruff settings are ruff's defaults (88 columns, ruff format). Nothing to configure: add a
+# [tool.ruff] section only for a reason, and write the reason in a comment beside it.
+[project]
+# NEW PROJECT: rename the project and the package under src/ (my_service).
+name = "my-service"
+version = "0.1.0"
+description = "Replace this with one sentence about what the project does."
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+# Installed in the Docker image so that the tests run there.
+test = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

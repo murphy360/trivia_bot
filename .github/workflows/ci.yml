@@ -1,0 +1,41 @@
+# CI from murphy360/standards (templates/ci.yml). Every job calls a shared workflow at the pinned tag @v2.
+# Keep the jobs that apply to the project. Any other action you add must be pinned to a full commit SHA,
+# with the version in a comment (the `standards` job fails otherwise).
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  standards:
+    uses: murphy360/standards/.github/workflows/standards-check.yml@v2
+  lint:
+    uses: murphy360/standards/.github/workflows/python-lint.yml@v2
+    with:
+      format-check: true
+      # every file must be clean (mode all, the default). A pull request labelled format-only must also prove it only
+      # re-formats Python files.
+      format-only: ${{ contains(github.event.pull_request.labels.*.name, 'format-only') }}
+  shell:
+    uses: murphy360/standards/.github/workflows/shell-lint.yml@v2
+  workflows:
+    uses: murphy360/standards/.github/workflows/actionlint.yml@v2
+  test:
+    uses: murphy360/standards/.github/workflows/test-docker.yml@v2
+    with:
+      command: "pytest -q"
+  image:
+    needs: [lint, test]
+    uses: murphy360/standards/.github/workflows/image.yml@v2
+    with:
+      # NEW PROJECT: rename the image (it is published as ghcr.io/<owner>/<image>) and change `push` to
+      #   push: ${{ github.event_name != 'pull_request' }}
+      # so that a push to main publishes it. The template itself only builds, so that it never publishes
+      # an image named after the placeholder.
+      image: my-service
+      push: false
+    permissions:
+      contents: read
+      packages: write
