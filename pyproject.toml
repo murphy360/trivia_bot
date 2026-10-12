@@ -1,12 +1,19 @@
 # The standard ruff settings are ruff's defaults (88 columns, ruff format). Nothing to configure: add a
 # [tool.ruff] section only for a reason, and write the reason in a comment beside it.
 [project]
-# NEW PROJECT: rename the project and the package under src/ (my_service).
-name = "my-service"
+name = "trivia-bot"
 version = "0.1.0"
-description = "Replace this with one sentence about what the project does."
+description = "Discord trivia bot: cross-server trivia nights with questions from trivia_service."
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "discord.py>=2.4,<3",
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.4",
+    "SQLAlchemy[asyncio]>=2.0",
+    "aiosqlite>=0.20",
+    "alembic>=1.13",
+]
 
 [project.optional-dependencies]
 # Installed in the Docker image so that the tests run there.

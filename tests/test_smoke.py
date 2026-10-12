@@ -1,7 +1,7 @@
-"""One test, so that CI has something to run. Replace it with real tests."""
+"""The package imports and knows its version."""
 
-import my_service
+import trivia_bot
 
 
 def test_package_imports():
-    assert my_service.__version__
+    assert trivia_bot.__version__
