@@ -1,6 +1,6 @@
 # The image the tests run in (CI: test-docker) and the image that is published (CI: image).
 # The checkout is mounted at /src when the tests run, so the editable install below finds your code there.
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 WORKDIR /src
 COPY pyproject.toml ./
