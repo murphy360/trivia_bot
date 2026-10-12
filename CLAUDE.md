@@ -1,4 +1,4 @@
-# Working on <project>
+# Working on trivia_bot
 
 Instructions for any Claude session in this repository. Built from murphy360/standards (templates/CLAUDE.md); keep
 the shared parts as they are and add what is particular to this project under "This project".
@@ -43,4 +43,16 @@ on the ticket and take the next one; never guess. Say on the ticket, in one comm
 - Prose in docs and tickets: short sentences, one idea per sentence, no em-dashes.
 
 ## This project
-<what is particular to this project: how to build and test it, its stacks and ports, its devices, its conventions>
+- A Discord bot (discord.py 2, Python 3.12). `trivia_service` owns the questions: it writes, fact-checks and stores
+  them. This bot owns the games, scores, players and champions, in its own SQLite store under `/data`.
+- Code is in `src/trivia_bot/`. Settings are read once in `config.py`, from the environment or `.env`. Never read
+  `os.environ` anywhere else.
+- Build and test: `docker build -t trivia-bot:<your-tag> .` then
+  `docker run --rm -v "$PWD:/src" -w /src trivia-bot:<your-tag> pytest -q`. Tests never reach Discord or
+  trivia_service: mock the client, and use `httpx.MockTransport` for the service.
+- Game rules are plain Python with no Discord types, so they can be tested alone. Discord code only posts and reads.
+- Every external call has a timeout, and every interaction gets a reply. A game always frees its slot.
+- Never sync commands on start-up by default. Use `SYNC_COMMANDS=true` or `/admin sync`.
+- Deployed on dontpanic from `murphy360/dontpanic`, next to `trivia_service`. The owner deploys.
+- The old bot, `murphy360/discord-bot-everything`, is reference only. Port the rules, not the code. Its review is
+  `docs/MODERNIZATION_REVIEW.md` on its `review/modernization` branch.

@@ -5,10 +5,13 @@ FROM python:3.12-slim
 WORKDIR /src
 COPY pyproject.toml ./
 COPY src ./src
-# Installs the package and pytest. NEW PROJECT: add your runtime dependencies to pyproject.toml.
 RUN pip install --no-cache-dir -e ".[test]"
 COPY tests ./tests
 
-# Running the image with no arguments runs the tests. NEW PROJECT: change this to start your service
-# once you have one; CI runs the tests with its own command.
-CMD ["pytest", "-q"]
+# The bot runs as an unprivileged user and keeps its database in /data.
+RUN useradd --uid 1000 --create-home bot && mkdir /data && chown bot:bot /data
+VOLUME /data
+USER bot
+
+# CI runs the tests with its own command (pytest -q).
+CMD ["python", "-m", "trivia_bot"]

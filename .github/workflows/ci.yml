@@ -30,12 +30,9 @@ jobs:
     needs: [lint, test]
     uses: murphy360/standards/.github/workflows/image.yml@v2
     with:
-      # NEW PROJECT: rename the image (it is published as ghcr.io/<owner>/<image>) and change `push` to
-      #   push: ${{ github.event_name != 'pull_request' }}
-      # so that a push to main publishes it. The template itself only builds, so that it never publishes
-      # an image named after the placeholder.
-      image: my-service
-      push: false
+      # published as ghcr.io/murphy360/trivia-bot on a push to main
+      image: trivia-bot
+      push: ${{ github.event_name != 'pull_request' }}
     permissions:
       contents: read
       packages: write
