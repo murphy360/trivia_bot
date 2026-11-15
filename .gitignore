@@ -5,4 +5,5 @@ __pycache__/
 *.egg-info/
 build/
 .env
-.claude/
+# a session's own Claude Code settings; .claude/settings.json and guard.py are tracked
+.claude/settings.local.json
