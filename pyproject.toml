@@ -20,7 +20,7 @@ dependencies = [
 test = ["pytest>=8"]
 # The ruff the lint and the pre-commit hook use: both run the project's pin by default. Dependabot moves it in a
 # pull request of its own, where a new ruff's findings show up; move the ruff-pre-commit rev with it.
-dev = ["ruff==0.17.4"]
+dev = ["ruff==0.17.5"]
 
 [build-system]
 requires = ["setuptools>=68"]
